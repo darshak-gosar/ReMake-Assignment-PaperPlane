@@ -87,11 +87,11 @@ class Component extends React.Component {
         this.updatedCurrentValues = filteredData;
       }
     }
+    filteredData = filteredData.filter((genure) => genure.vote_average >= this.state.value);
     //Once the Data is filtered, Sort the Data
-    this.sortByPriceDesc();
     this.setState({
       activeLink: this.updateLink,
-      movies: filteredData
+      movies: filteredData.sort((a, b) => (b.popularity - a.popularity))
     });
   };
 
@@ -121,9 +121,8 @@ class Component extends React.Component {
       rangedData = this.currentValues.filter((genure) => genure.vote_average >= currentVal)
     }
     //Once the Data is filtered, Sort the Data
-    this.sortByPriceDesc();
     this.setState({
-      movies: rangedData,
+      movies: rangedData.sort((a, b) => (b.popularity - a.popularity)),
       value: currentVal
     });
   };
