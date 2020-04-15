@@ -52,15 +52,6 @@ class Component extends React.Component {
   }
 
   /**
-   * Sort the data based on Popularity
-   */
-  sortByPriceDesc() {
-    this.setState(prevState => {
-      this.state.movies.sort((a, b) => (b.popularity - a.popularity))
-    });
-  }
-
-  /**
    * Handling Genre Click for filtering data based on selected Genre
    * @param {*} id 
    */
