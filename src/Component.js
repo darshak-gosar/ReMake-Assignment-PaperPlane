@@ -33,9 +33,10 @@ class Component extends React.Component {
         }
       })
     });
+    let movieResult = results[0].results.filter((genure) => genure.vote_average >= this.state.value)
     this.setState({
       isLoaded: true,
-      movies: results[0].results.sort((a, b) => (b.popularity - a.popularity)),
+      movies: movieResult.sort((a, b) => (b.popularity - a.popularity)),
       genres: genres,
       value: constantValues.defaultRange
     });
