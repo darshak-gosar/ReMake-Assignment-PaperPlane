@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import Slider from 'react-rangeslider'
+import Slider from 'react-rangeslider';
+import { apiCall } from './services'
 
 class Component extends React.Component {
   currentValues = {};
@@ -19,38 +20,15 @@ class Component extends React.Component {
     };
   }
 
-  /**
-  * API Call Mounted with Promise and when Promise is returned render the DOM
-  */
-  componentDidMount() {
-    //Mapping API calls to Promise
-    const promises = Promise.all([
-      fetch("https://api.themoviedb.org/3/movie/now_playing?api_key=a5d4b72b32ca6d7281a849a4bbe3eacf"),
-      fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=a5d4b72b32ca6d7281a849a4bbe3eacf")
-    ]);
-
-    //Getting Response from Promise
-    promises
-      .then((results) =>
-        Promise.all(results.map(r => r.json())
-        ))
-      .then((results) => {
-        this.currentValues = results[0].results;
-        this.setState({
-          isLoaded: true,
-          movies: results[0].results.sort((a, b) => (b.popularity - a.popularity)),
-          genres: results[1].genres,
-          value: 3
-        });
-      },
-        // For handling errors here
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+  async componentDidMount() {
+    let results = await apiCall();
+    this.currentValues = results[0].results;
+    this.setState({
+      isLoaded: true,
+      movies: results[0].results,
+      genres: results[1].genres,
+      value: 3
+    });
   }
 
   /**
