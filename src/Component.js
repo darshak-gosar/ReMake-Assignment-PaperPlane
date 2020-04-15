@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Slider from 'react-rangeslider';
-import { apiCall } from './services'
+import { apiCall } from './services';
+import * as constantValues from './Constants'
 
 class Component extends React.Component {
   currentValues = {};
@@ -16,18 +17,27 @@ class Component extends React.Component {
       movies: [],
       genres: [],
       activeLink: [],
-      value: 3,
+      value: constantValues.defaultRange,
     };
   }
 
   async componentDidMount() {
     let results = await apiCall();
     this.currentValues = results[0].results;
+    let genres = [];
+    //Filtering only those Genres which are present in Movies
+    let genreVal = results[1].genres.map((obj) => {
+      results[0].results.filter((genure) => {
+        if (genure.genre_ids.includes(obj.id) && !genres.some(o => o.id === obj.id)) {
+          genres.push(obj);
+        }
+      })
+    });
     this.setState({
       isLoaded: true,
-      movies: results[0].results,
-      genres: results[1].genres,
-      value: 3
+      movies: results[0].results.sort((a, b) => (b.popularity - a.popularity)),
+      genres: genres,
+      value: constantValues.defaultRange
     });
   }
 

@@ -10,6 +10,7 @@ This is a React Application build to shows Now Playing Movies details. This deta
 
 ## Assumptions
 1. Minimum rating input with a range between 0 and 10, increments of 0.5 and a default set to 3.
+Note: Default value for Rating is configured in Constant.js with variable name defaultRange
 2. Multiple genres input (checkboxes). Must only contain genres from the TMDb API that are in the returned movie result set.
 
 ## Editor
@@ -27,7 +28,7 @@ This is a React Application build to shows Now Playing Movies details. This deta
 
 ## File Structure
 1. Logic File: Component.js
-2. Service API fetch File: services.js
+2. Service API fetch File: service.js
 3. Setting Constant: Constant.js
 
 ## Dependencies
