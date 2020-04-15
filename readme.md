@@ -26,9 +26,9 @@ This is a React Application build to shows Now Playing Movies details. This deta
 5. npm run build //For bulding the code and deploying to the Server
 
 ## File Structure
-Logic File: Component.js
-Service API fetch File: service.js
-Setting Constant: Constant.js
+1.Logic File: Component.js
+2.Service API fetch File: services.js
+3.Setting Constant: Constant.js
 
 ## Dependencies
 1. npm install --save bootstrap
