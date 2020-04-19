@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import Slider from 'react-rangeslider';
 import { apiCall } from './services';
 import * as constantValues from './Constants'
+import Rating from './Components/Rating';
+import MovieList from './Components/MovieList';
+import Genres from './Components/Genres'
 
 class Component extends React.Component {
   currentValues = {};
@@ -19,6 +21,8 @@ class Component extends React.Component {
       activeLink: [],
       value: constantValues.defaultRange,
     };
+    this.getGenres = this.getGenres.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
@@ -121,72 +125,20 @@ class Component extends React.Component {
   render() {
     //Maintaining the state if link clicked on Genre
     const { value, activeLink } = this.state;
-    const sliderLabels = {
-      0: '0',
-      5: '5',
-      10: '10'
-    }
     return (
       <Container className="custom-conatiner">
         <Row>
           <Col md={3} sm={12} xs={12}>
             <div className="filter_panel card">
-              <div className="filter">
-                <h3>Genres</h3>
-                <ul id="genres" className="multi_select text">
-                  {this.state.genres.map(genre => (
-                    <li onClick={() => this.handleClick(genre.id)}
-                      className={
-                        (activeLink.indexOf(genre.id) !== -1 ? "selected" : "")
-                      } key={genre.id} data-value={genre.id}><a className="no_click" href="#">{genre.name}</a></li>
-                  ))}
-                </ul>
-              </div>
-              <div className="filter">
-                <h3>Rating</h3>
-                <div className='slider orientation-reversed'>
-                  <div className='slider-group'>
-                    <div className='slider-horizontal'>
-                      {/* Range Slider being called */}
-                      <Slider
-                        min={0}
-                        max={10}
-                        step={0.5}
-                        value={value}
-                        labels={sliderLabels}
-                        onChange={this.rangeFilterChange} />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Genre Component */}
+              <Genres activeLinks={activeLink} genureList={this.state.genres} click={this.handleClick}></Genres>
+              {/* Rating Component */}
+              <Rating currentValue={value} change={this.rangeFilterChange}></Rating>
             </div>
           </Col>
           <Col md={9} sm={12} xs={12}>
-            <div className="no_pad">
-              <section id="media_results" className="panel">
-                <div className="media_items results">
-                  <div id="page_1" className="page_wrapper">
-                    {this.state.movies.map(movie => (
-                      <div key={movie.id} className="card style_1">
-                        <div className="image">
-                          <div className="wrapper">
-                            <a className="image" href="#" title={movie.title}>
-                              <img className="poster lazyload lazyloaded" alt="" src={"https://image.tmdb.org/t/p/w500/" + movie.poster_path} data-loaded="true"></img>
-                            </a>
-                          </div>
-                        </div>
-                        <div className="content">
-                          <h2><a href="#" title={movie.title}>{movie.title}</a></h2>
-                          <p><b>Genres: </b>{this.getGenres(movie.genre_ids)}</p>
-                          <br />
-                          <p><b>Rating: </b>{movie.vote_average}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            </div>
+            {/* Movie Component */}
+            <MovieList movieList={this.state.movies} click={this.getGenres}></MovieList>
           </Col>
         </Row>
       </Container>

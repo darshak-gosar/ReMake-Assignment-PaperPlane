@@ -47,3 +47,5 @@ The features of this Application are as follow:
 	* Images are retrieved as part of “Now Playing” and don’t need to be separately fetched
 4. Important: Once the API key is setup, it needs to be added in the Constant.js file which will be maintained by the variable apiKey. 
 5. Default value for Rating is configured in Constant.js with variable name defaultRange.
+
+
