@@ -34,7 +34,7 @@ The features of this Application are as follow:
 5. npm run build //For bulding the code which can be deployed on the server
 
 ## File Structure
-1. Logic File: Component.js
+1. Componets: Contains all the componets(Genre Filter,Movies List, Rating Filter and Loader)
 2. Service API fetch File: service.js
 3. Setting Constant: Constant.js
 ## Note: We are currently not using hooks but will need that once the number and complexity of facets/filters increases. 
