@@ -37,7 +37,6 @@ The features of this Application are as follow:
 1. Componets: Contains all the componets(Genre Filter,Movies List, Rating Filter and Loader)
 2. Service API fetch File: service.js
 3. Setting Constant: Constant.js
-## Note: We are currently not using hooks but will need that once the number and complexity of facets/filters increases. 
 
 ## Notes
 1. The API calls are only made once.
@@ -48,5 +47,6 @@ The features of this Application are as follow:
 	* Images are retrieved as part of “Now Playing” and don’t need to be separately fetched
 4. Important: Once the API key is setup, it needs to be added in the Constant.js file which will be maintained by the variable apiKey. 
 5. Default value for Rating is configured in Constant.js with variable name defaultRange.
+6. We are currently not using hooks but will need that once the number and complexity of facets/filters increases. 
 
 
