@@ -4,12 +4,10 @@ import { apiCall } from '../services';
 import * as constantValues from '../Constants'
 import Rating from '../Components/Rating';
 import MovieList from '../Components/MovieList';
-import Genres from '../Components/Genres'
+import Genres from '../Components/Genres';
+import Loader from '../Components/Loader';
 
 class Component extends React.Component {
-    currentValues = {};
-    updateLink = [];
-    updatedCurrentValues = {};
     constructor(props) {
         super(props);
         //this.state Object to maintain the states when fetched and loaded
@@ -20,17 +18,20 @@ class Component extends React.Component {
             genres: [],
             activeLink: [],
             value: constantValues.defaultRange,
+            moviesList: []
         };
         this.getGenres = this.getGenres.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
+    /**
+     * API call with mapping result to state
+     */
     async componentDidMount() {
         let results = await apiCall();
-        this.currentValues = results[0].results;
         let genres = [];
         //Filtering only those Genres which are present in Movies
-        let genreVal = results[1].genres.map((obj) => {
+        results[1].genres.map((obj) => {
             results[0].results.filter((genure) => {
                 if (genure.genre_ids.includes(obj.id) && !genres.some(o => o.id === obj.id)) {
                     genres.push(obj);
@@ -42,7 +43,8 @@ class Component extends React.Component {
             isLoaded: true,
             movies: movieResult.sort((a, b) => (b.popularity - a.popularity)),
             genres: genres,
-            value: constantValues.defaultRange
+            value: constantValues.defaultRange,
+            moviesList: results[0].results
         });
     }
 
@@ -60,34 +62,21 @@ class Component extends React.Component {
      * @param {*} id 
      */
     handleClick(id) {
-        let filteredData = this.currentValues;
-        var index = this.updateLink.indexOf(id)
-        if (this.updateLink && this.updateLink.length === 0) {
-            this.updateLink.push(id);
-            filteredData = this.updateData(filteredData, this.state.movies);
-            this.updatedCurrentValues = filteredData;
-        } else if (this.updateLink && this.updateLink.length > 0) {
-            if (index === -1) {
-                this.updateLink.push(id);
-                filteredData = this.updateData(filteredData, this.state.movies);
-                this.updatedCurrentValues = filteredData;
-            } else {
-                this.updateLink.splice(index, 1);
-                // filteredData = this.updateData(this.currentValues,currentValues);
-                let currentValues = this.currentValues;
-                this.updateLink.map((obj) => {
-                    currentValues = currentValues.filter((genure) => genure.genre_ids.includes(obj))
-                })
-                filteredData = currentValues;
-                this.updatedCurrentValues = filteredData;
-            }
-        }
-        filteredData = filteredData.filter((genure) => genure.vote_average >= this.state.value);
         //Once the Data is filtered, Sort the Data
-        this.setState({
-            activeLink: this.updateLink,
-            movies: filteredData.sort((a, b) => (b.popularity - a.popularity))
-        });
+        this.setState((prevState, props) => {
+            let activeLinks = prevState.activeLink.concat([]) || []
+            let activeLinkIndex = activeLinks.indexOf(id);
+            if (activeLinkIndex === -1) {
+                activeLinks.push(id);
+            } else {
+                activeLinks.splice(activeLinkIndex, 1);
+            }
+            let filteredData = this.filterMovies(prevState.moviesList, prevState.value, activeLinks);
+            return {
+                activeLink: activeLinks,
+                movies: filteredData.sort((a, b) => (b.popularity - a.popularity))
+            }
+        })
     };
 
     /**
@@ -104,22 +93,32 @@ class Component extends React.Component {
     }
 
     /**
+     * Filtering the data based on Rating and Genres list
+     */
+    filterMovies = (movieList, ratingFilter, genreFilter) => {
+        return movieList.filter((movie) => {
+            if (movie.vote_average < ratingFilter) {
+                return false;
+            }
+            if (!genreFilter.every((genre) => movie.genre_ids.includes(genre))) {
+                return false;
+            }
+            return true;
+        })
+    }
+
+    /**
     * Range Selector Functionality based on Change of Range
     */
-    rangeFilterChange = value => {
-        var currentVal = value;
-        var rangedData;
-        var rangeFilterVal = this.updatedCurrentValues;
-        if (this.updateLink && this.updateLink.length > 0) {
-            rangedData = rangeFilterVal.filter((genure) => genure.vote_average >= currentVal)
-        } else {
-            rangedData = this.currentValues.filter((genure) => genure.vote_average >= currentVal)
-        }
+    rangeFilterChange = rangeValue => {
         //Once the Data is filtered, Sort the Data
-        this.setState({
-            movies: rangedData.sort((a, b) => (b.popularity - a.popularity)),
-            value: currentVal
-        });
+        this.setState((prevState, props) => {
+            let filteredData = this.filterMovies(prevState.moviesList, rangeValue, prevState.activeLink);
+            return {
+                value: rangeValue,
+                movies: filteredData.sort((a, b) => (b.popularity - a.popularity))
+            }
+        })
     };
 
     render() {
@@ -141,7 +140,7 @@ class Component extends React.Component {
                             {/* Movie Component */}
                             <MovieList movieList={this.state.movies} click={this.getGenres}></MovieList>
                         </Col>
-                    </Row> : <div className="loader"></div>
+                    </Row> : <Loader /> // Loader Component
                 }
             </Container>
         );
