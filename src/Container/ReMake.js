@@ -127,20 +127,22 @@ class Component extends React.Component {
         const { value, activeLink } = this.state;
         return (
             <Container className="custom-conatiner">
-                <Row>
-                    <Col md={3} sm={12} xs={12}>
-                        <div className="filter_panel card">
-                            {/* Genre Component */}
-                            <Genres activeLinks={activeLink} genureList={this.state.genres} click={this.handleClick}></Genres>
-                            {/* Rating Component */}
-                            <Rating currentValue={value} change={this.rangeFilterChange}></Rating>
-                        </div>
-                    </Col>
-                    <Col md={9} sm={12} xs={12}>
-                        {/* Movie Component */}
-                        <MovieList movieList={this.state.movies} click={this.getGenres}></MovieList>
-                    </Col>
-                </Row>
+                {this.state.isLoaded ?
+                    <Row>
+                        <Col md={3} sm={12} xs={12}>
+                            <div className="filter_panel card">
+                                {/* Genre Component */}
+                                <Genres activeLinks={activeLink} genureList={this.state.genres} click={this.handleClick}></Genres>
+                                {/* Rating Component */}
+                                <Rating currentValue={value} change={this.rangeFilterChange}></Rating>
+                            </div>
+                        </Col>
+                        <Col md={9} sm={12} xs={12}>
+                            {/* Movie Component */}
+                            <MovieList movieList={this.state.movies} click={this.getGenres}></MovieList>
+                        </Col>
+                    </Row> : <div className="loader"></div>
+                }
             </Container>
         );
     }

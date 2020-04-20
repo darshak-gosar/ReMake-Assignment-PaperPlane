@@ -12,5 +12,9 @@ export const apiCall = async () => {
       fetch(constantVal.apiURLs[1]),
     ])
   return Promise.all(promise.map(p => p.json()))
+    .catch(function (err) {
+      console.log('A promise failed to resolve', err);
+      return err;
+    })
 
 }
