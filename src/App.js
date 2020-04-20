@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Component from './Component'
+import ReMake from './Container/ReMake';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <h1>ReMake Assignment: PaperPlane</h1>
       </header>
-      <Component></Component>
+      <ReMake></ReMake>
     </div>
   );
 }
