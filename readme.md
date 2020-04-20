@@ -37,6 +37,7 @@ The features of this Application are as follow:
 1. Logic File: Component.js
 2. Service API fetch File: service.js
 3. Setting Constant: Constant.js
+## Note: We are currently not using hooks but will need that once the number and complexity of facets/filters increases. 
 
 ## Notes
 1. The API calls are only made once.
