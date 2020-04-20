@@ -128,7 +128,7 @@ class Component extends React.Component {
             <Container className="custom-conatiner">
                 {this.state.isLoaded ?
                     <Row>
-                        <Col md={3} sm={12} xs={12}>
+                        <Col lg={3} md={4} sm={12} xs={12}>
                             <div className="filter_panel card">
                                 {/* Genre Component */}
                                 <Genres activeLinks={activeLink} genureList={this.state.genres} click={this.handleClick}></Genres>
@@ -136,7 +136,7 @@ class Component extends React.Component {
                                 <Rating currentValue={value} change={this.rangeFilterChange}></Rating>
                             </div>
                         </Col>
-                        <Col md={9} sm={12} xs={12}>
+                        <Col lg={9} md={8} sm={12} xs={12}>
                             {/* Movie Component */}
                             <MovieList movieList={this.state.movies} click={this.getGenres}></MovieList>
                         </Col>

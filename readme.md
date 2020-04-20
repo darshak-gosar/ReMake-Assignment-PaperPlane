@@ -48,6 +48,5 @@ The features of this Application are as follow:
 4. Important: Once the API key is setup, it needs to be added in the Constant.js file which will be maintained by the variable apiKey. 
 5. Default value for Rating is configured in Constant.js with variable name defaultRange.
 6. We are currently not using hooks but will need that once the number and complexity of facets/filters increases. 
-7. You will notice that there is one card slot blank in the last row. This is because the movie not displayed has a Rating of 1. Please change the Rating to 1 to see all Movie cards.
 
 
